@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Dataflow",
+    "displayName": "OpenAQ_Locations"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "1aa70d30-bf04-98d6-4abd-1d14e99221b9"
+  }
+}

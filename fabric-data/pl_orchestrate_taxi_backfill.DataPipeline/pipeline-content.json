@@ -1,0 +1,52 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "ForEach",
+        "typeProperties": {
+          "isSequential": false,
+          "batchCount": 6,
+          "items": {
+            "value": "@json('[\n  {\"year\": \"2024\", \"month\": \"01\"},\n  {\"year\": \"2024\", \"month\": \"02\"},\n  {\"year\": \"2024\", \"month\": \"03\"},\n  {\"year\": \"2024\", \"month\": \"04\"},\n  {\"year\": \"2024\", \"month\": \"05\"},\n  {\"year\": \"2024\", \"month\": \"06\"},\n  {\"year\": \"2024\", \"month\": \"07\"},\n  {\"year\": \"2024\", \"month\": \"08\"},\n  {\"year\": \"2024\", \"month\": \"09\"},\n  {\"year\": \"2024\", \"month\": \"10\"},\n  {\"year\": \"2024\", \"month\": \"11\"},\n  {\"year\": \"2024\", \"month\": \"12\"},\n  {\"year\": \"2025\", \"month\": \"01\"},\n  {\"year\": \"2025\", \"month\": \"02\"},\n  {\"year\": \"2025\", \"month\": \"03\"},\n  {\"year\": \"2025\", \"month\": \"04\"},\n  {\"year\": \"2025\", \"month\": \"05\"},\n  {\"year\": \"2025\", \"month\": \"06\"},\n  {\"year\": \"2025\", \"month\": \"07\"},\n  {\"year\": \"2025\", \"month\": \"08\"},\n  {\"year\": \"2025\", \"month\": \"09\"},\n  {\"year\": \"2025\", \"month\": \"10\"},\n  {\"year\": \"2025\", \"month\": \"11\"},\n  {\"year\": \"2025\", \"month\": \"12\"},\n  {\"year\": \"2026\", \"month\": \"01\"},\n  {\"year\": \"2026\", \"month\": \"02\"},\n  {\"year\": \"2026\", \"month\": \"03\"}\n]')",
+            "type": "Expression"
+          },
+          "activities": [
+            {
+              "type": "InvokePipeline",
+              "typeProperties": {
+                "parameters": {
+                  "year": {
+                    "value": "@item().year",
+                    "type": "Expression"
+                  },
+                  "month": {
+                    "value": "@item().month",
+                    "type": "Expression"
+                  }
+                },
+                "waitOnCompletion": true,
+                "workspaceId": "00000000-0000-0000-0000-000000000000",
+                "pipelineId": "ce1bbab2-dd4d-a8c7-4f07-ceff8b2dfead",
+                "operationType": "InvokeFabricPipeline"
+              },
+              "externalReferences": {
+                "connection": "d55189bc-bdc4-4541-84c1-ab0c201362a8"
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "Invoke pipeline1",
+              "dependsOn": []
+            }
+          ]
+        },
+        "name": "ForEach1",
+        "dependsOn": []
+      }
+    ]
+  }
+}

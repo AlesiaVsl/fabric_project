@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "DataPipeline",
+    "displayName": "pl_orchestrate_taxi_backfill"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "3678a958-0d5c-a260-4506-b134eb5a6e2e"
+  }
+}

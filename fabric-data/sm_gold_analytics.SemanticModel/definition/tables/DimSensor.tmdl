@@ -1,0 +1,71 @@
+table DimSensor
+	lineageTag: dffd5412-dc35-4f71-92d6-92d1cf96d9f8
+	sourceLineageTag: [dbo].[DimSensor]
+
+	column sensor_id
+		dataType: int64
+		formatString: 0
+		lineageTag: ebb5b20e-6183-4c9e-a574-6e56d470b466
+		sourceLineageTag: sensor_id
+		summarizeBy: none
+		sourceColumn: sensor_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column location_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 25db8750-90b8-415b-bcbf-aa22b231c215
+		sourceLineageTag: location_id
+		summarizeBy: none
+		sourceColumn: location_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column location_name
+		dataType: string
+		lineageTag: ed2395a4-bef5-4a06-a19a-a20456ca11c1
+		sourceLineageTag: location_name
+		summarizeBy: none
+		sourceColumn: location_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column locality
+		dataType: string
+		lineageTag: 70198320-6386-4945-8740-593f5b3b4cc7
+		sourceLineageTag: locality
+		summarizeBy: none
+		sourceColumn: locality
+
+		annotation SummarizationSetBy = Automatic
+
+	column latitude
+		dataType: double
+		lineageTag: 9af0a9be-9a27-44c3-b9a3-4808662271a6
+		sourceLineageTag: latitude
+		summarizeBy: none
+		sourceColumn: latitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column longitude
+		dataType: double
+		lineageTag: b4f3eaea-8320-41a6-880a-3617e7645bea
+		sourceLineageTag: longitude
+		summarizeBy: none
+		sourceColumn: longitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition DimSensor = entity
+		mode: directLake
+		source
+			entityName: DimSensor
+			schemaName: dbo
+			expressionSource: 'DirectLake - wh_gold'
+

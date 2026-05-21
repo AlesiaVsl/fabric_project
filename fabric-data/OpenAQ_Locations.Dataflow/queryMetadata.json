@@ -1,0 +1,34 @@
+{
+  "formatVersion": "202502",
+  "computeEngineSettings": {
+    "allowModernEvaluationEngine": true
+  },
+  "name": "OpenAQ_Locations",
+  "queryGroups": [],
+  "documentLocale": "en-US",
+  "queriesMetadata": {
+    "Query1": {
+      "queryId": "d5c30dd4-0967-43d5-9a37-a6e6858e6bd0",
+      "queryName": "Query1",
+      "loadEnabled": false
+    },
+    "Query1_DataDestination": {
+      "queryId": "6dbb6bc6-3c1e-48c3-a24e-b40956ad4283",
+      "queryName": "Query1_DataDestination",
+      "isHidden": true,
+      "loadEnabled": false
+    }
+  },
+  "connections": [
+    {
+      "path": "https://api.openaq.org/v3/locations?bbox=-74.05,40.68,-73.90,40.88&parameters_id=2&limit=100&api_key=e5f60b93ef19d8360932e3bd0005765983fe8ad766742902d57f19f9c9212dc3",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"ca5934d2-1e80-4ac3-9c2e-68283dcda49d\"}"
+    },
+    {
+      "path": "Lakehouse",
+      "kind": "Lakehouse",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"462b80e3-7445-493c-9b97-31987d350d5e\"}"
+    }
+  ]
+}

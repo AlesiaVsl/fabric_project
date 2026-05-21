@@ -1,0 +1,92 @@
+table FactAirQualityDaily
+	lineageTag: 1123bd0f-64ae-4583-99fd-9125f6806c64
+	sourceLineageTag: [dbo].[FactAirQualityDaily]
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 240eb2ff-93b5-468f-83ad-8cbf99d6eb0b
+		sourceLineageTag: date_key
+		summarizeBy: none
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column measurement_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 3fd5bd1c-fb8b-49c1-8440-2cee364db235
+		sourceLineageTag: measurement_date
+		summarizeBy: none
+		sourceColumn: measurement_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column sensor_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 3bd3e597-74ef-45b7-9ff9-a5cfee42daea
+		sourceLineageTag: sensor_id
+		summarizeBy: none
+		sourceColumn: sensor_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column parameter_name
+		dataType: string
+		lineageTag: 668445b7-afcb-4b24-ba13-8996c42ae41e
+		sourceLineageTag: parameter_name
+		summarizeBy: none
+		sourceColumn: parameter_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column avg_value
+		dataType: double
+		lineageTag: 25c1d61e-9aff-463b-8447-1b565150f76c
+		sourceLineageTag: avg_value
+		summarizeBy: sum
+		sourceColumn: avg_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column max_value
+		dataType: double
+		lineageTag: 85cc5383-9db8-4152-a5e4-2dd61c921a68
+		sourceLineageTag: max_value
+		summarizeBy: sum
+		sourceColumn: max_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column min_value
+		dataType: double
+		lineageTag: 17c53dcd-b299-427b-8d11-94bad4ea80df
+		sourceLineageTag: min_value
+		summarizeBy: sum
+		sourceColumn: min_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column units
+		dataType: string
+		lineageTag: b5982aa3-30ab-4698-a02c-8544738a7999
+		sourceLineageTag: units
+		summarizeBy: none
+		sourceColumn: units
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactAirQualityDaily = entity
+		mode: directLake
+		source
+			entityName: FactAirQualityDaily
+			schemaName: dbo
+			expressionSource: 'DirectLake - wh_gold'
+

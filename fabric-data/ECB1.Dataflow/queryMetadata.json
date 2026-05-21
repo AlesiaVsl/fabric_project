@@ -1,0 +1,34 @@
+{
+  "formatVersion": "202502",
+  "computeEngineSettings": {
+    "allowModernEvaluationEngine": true
+  },
+  "name": "ECB1",
+  "queryGroups": [],
+  "documentLocale": "en-US",
+  "queriesMetadata": {
+    "ecb_usd_eur_daily": {
+      "queryId": "ad6b8e69-d3f1-42f8-8139-81ecb8ff62a9",
+      "queryName": "ecb_usd_eur_daily",
+      "loadEnabled": false
+    },
+    "ecb_usd_eur_daily_DataDestination": {
+      "queryId": "7cb16ab6-0b91-4d8f-b271-32a40e9eb7a3",
+      "queryName": "ecb_usd_eur_daily_DataDestination",
+      "isHidden": true,
+      "loadEnabled": false
+    }
+  },
+  "connections": [
+    {
+      "path": "https://data-api.ecb.europa.eu/service/data/EXR/D.USD.EUR.SP00.A?format=csvdata&startPeriod=2024-01-01",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"12ff1f78-2944-4d4d-bcad-fcef290ba6fb\"}"
+    },
+    {
+      "path": "Lakehouse",
+      "kind": "Lakehouse",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"462b80e3-7445-493c-9b97-31987d350d5e\"}"
+    }
+  ]
+}

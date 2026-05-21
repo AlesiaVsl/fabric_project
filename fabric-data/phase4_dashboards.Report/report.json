@@ -1,0 +1,444 @@
+{
+  "config": "{\"version\":\"5.73\",\"themeCollection\":{\"baseTheme\":{\"name\":\"CY26SU05\",\"type\":2,\"version\":{\"visual\":\"2.9.0\",\"report\":\"3.3.0\",\"page\":\"2.3.1\"}}},\"activeSectionIndex\":3,\"modelExtensions\":[{\"name\":\"extension\",\"entities\":[{\"name\":\"DimDate\",\"extends\":\"DimDate\",\"measures\":[{\"name\":\"Corr Trips vs PM25\",\"dataType\":3,\"expression\":\"\\nVAR Combined =\\n    FILTER(\\n        ADDCOLUMNS(\\n            VALUES(DimDate[date_key]),\\n            \\\"TripsVal\\\", [Total Trips],\\n            \\\"PM25Val\\\", [Avg PM25]\\n        ),\\n        NOT ISBLANK([TripsVal]) && NOT ISBLANK([PM25Val])\\n    )\\nVAR AvgX = AVERAGEX(Combined, [TripsVal])\\nVAR AvgY = AVERAGEX(Combined, [PM25Val])\\nVAR Numerator =\\n    SUMX(Combined, ([TripsVal] - AvgX) * ([PM25Val] - AvgY))\\nVAR DenomX =\\n    SUMX(Combined, ([TripsVal] - AvgX) * ([TripsVal] - AvgX))\\nVAR DenomY =\\n    SUMX(Combined, ([PM25Val] - AvgY) * ([PM25Val] - AvgY))\\nRETURN DIVIDE(Numerator, SQRT(DenomX * DenomY))\",\"errorMessage\":null,\"hidden\":false,\"references\":{\"unrecognizedReferences\":false,\"measures\":[{\"schema\":\"\",\"entity\":\"FactTaxiDaily\",\"name\":\"Total Trips\"},{\"schema\":\"\",\"entity\":\"FactTaxiDaily\",\"name\":\"Avg PM25\"}]},\"formulaOverride\":null,\"formatInformation\":{\"formatString\":\"G\",\"format\":\"General\",\"thousandSeparator\":false,\"currencyFormat\":null,\"dateTimeCustomFormat\":null}},{\"name\":\"Corr Trips vs NO2\",\"dataType\":3,\"expression\":\"\\nVAR Combined =\\n    FILTER(\\n        ADDCOLUMNS(\\n            VALUES(DimDate[date_key]),\\n            \\\"TripsVal\\\", [Total Trips],\\n            \\\"NO2Val\\\", [Avg NO2]\\n        ),\\n        NOT ISBLANK([TripsVal]) && NOT ISBLANK([NO2Val])\\n    )\\nVAR AvgX = AVERAGEX(Combined, [TripsVal])\\nVAR AvgY = AVERAGEX(Combined, [NO2Val])\\nVAR Numerator =\\n    SUMX(Combined, ([TripsVal] - AvgX) * ([NO2Val] - AvgY))\\nVAR DenomX =\\n    SUMX(Combined, ([TripsVal] - AvgX) * ([TripsVal] - AvgX))\\nVAR DenomY =\\n    SUMX(Combined, ([NO2Val] - AvgY) * ([NO2Val] - AvgY))\\nRETURN DIVIDE(Numerator, SQRT(DenomX * DenomY))\",\"errorMessage\":null,\"hidden\":false,\"references\":{\"unrecognizedReferences\":false,\"measures\":[{\"schema\":\"\",\"entity\":\"FactTaxiDaily\",\"name\":\"Total Trips\"},{\"schema\":\"\",\"entity\":\"FactTaxiDaily\",\"name\":\"Avg NO2\"}]},\"formulaOverride\":null,\"formatInformation\":{\"formatString\":\"G\",\"format\":\"General\",\"thousandSeparator\":false,\"currencyFormat\":null,\"dateTimeCustomFormat\":null}}]},{\"name\":\"FactTaxiDaily\",\"extends\":\"FactTaxiDaily\",\"measures\":[{\"name\":\"Avg Fare EUR\",\"dataType\":3,\"expression\":\"DIVIDE([Total Revenue EUR], [Total Trips])\",\"errorMessage\":null,\"hidden\":false,\"references\":{\"unrecognizedReferences\":false,\"measures\":[{\"schema\":\"\",\"entity\":\"FactTaxiDaily\",\"name\":\"Total Revenue EUR\"},{\"schema\":\"\",\"entity\":\"FactTaxiDaily\",\"name\":\"Total Trips\"}]},\"formulaOverride\":null,\"formatInformation\":{\"formatString\":\"G\",\"format\":\"General\",\"thousandSeparator\":false,\"currencyFormat\":null,\"dateTimeCustomFormat\":null}},{\"name\":\"Trips Index\",\"dataType\":3,\"expression\":\"\\nVAR BaseYear =\\n    CALCULATE(\\n        [Avg Trips per Day],\\n        ALL(DimDate),\\n        DimDate[year] = 2024\\n    )\\nVAR CurrentYear = [Avg Trips per Day]\\nRETURN DIVIDE(CurrentYear, BaseYear) * 100\",\"errorMessage\":null,\"hidden\":false,\"references\":{\"unrecognizedReferences\":false,\"measures\":[{\"schema\":\"extension\",\"entity\":\"FactTaxiDaily\",\"name\":\"Avg Trips per Day\"}]},\"formulaOverride\":null,\"formatInformation\":{\"formatString\":\"G\",\"format\":\"General\",\"thousandSeparator\":false,\"currencyFormat\":null,\"dateTimeCustomFormat\":null}},{\"name\":\"PM25 Index\",\"dataType\":3,\"expression\":\"\\nVAR BaseYear =\\n    CALCULATE(\\n        [Avg PM25],\\n        ALL(DimDate),\\n        DimDate[year] = 2024\\n    )\\nVAR CurrentYear = [Avg PM25]\\nRETURN DIVIDE(CurrentYear, BaseYear) * 100\",\"errorMessage\":null,\"hidden\":false,\"references\":{\"unrecognizedReferences\":false,\"measures\":[{\"schema\":\"\",\"entity\":\"FactTaxiDaily\",\"name\":\"Avg PM25\"}]},\"formulaOverride\":null,\"formatInformation\":{\"formatString\":\"G\",\"format\":\"General\",\"thousandSeparator\":false,\"currencyFormat\":null,\"dateTimeCustomFormat\":null}},{\"name\":\"NO2 Index\",\"dataType\":3,\"expression\":\"\\nVAR BaseYear =\\n    CALCULATE(\\n        [Avg NO2],\\n        ALL(DimDate),\\n        DimDate[year] = 2024\\n    )\\nVAR CurrentYear = [Avg NO2]\\nRETURN DIVIDE(CurrentYear, BaseYear) * 100\",\"errorMessage\":null,\"hidden\":false,\"references\":{\"unrecognizedReferences\":false,\"measures\":[{\"schema\":\"\",\"entity\":\"FactTaxiDaily\",\"name\":\"Avg NO2\"}]},\"formulaOverride\":null,\"formatInformation\":{\"formatString\":\"G\",\"format\":\"General\",\"thousandSeparator\":false,\"currencyFormat\":null,\"dateTimeCustomFormat\":null}},{\"name\":\"GDP Index\",\"dataType\":3,\"expression\":\"\\nVAR BaseYear =\\n    CALCULATE(\\n        SUM(DimGDP[gdp_current_usd]),\\n        ALL(DimGDP),\\n        DimGDP[year] = 2024\\n    )\\nVAR CurrentYear = SUM(DimGDP[gdp_current_usd])\\nRETURN DIVIDE(CurrentYear, BaseYear) * 100\",\"errorMessage\":null,\"hidden\":false,\"formulaOverride\":null,\"formatInformation\":{\"formatString\":\"G\",\"format\":\"General\",\"thousandSeparator\":false,\"currencyFormat\":null,\"dateTimeCustomFormat\":null}},{\"name\":\"Avg Trips per Day\",\"dataType\":3,\"expression\":\"\\nDIVIDE(\\n    [Total Trips],\\n    DISTINCTCOUNT(FactTaxiDaily[date_key])\\n)\",\"errorMessage\":null,\"hidden\":false,\"references\":{\"unrecognizedReferences\":false,\"measures\":[{\"schema\":\"\",\"entity\":\"FactTaxiDaily\",\"name\":\"Total Trips\"}]},\"formulaOverride\":null,\"formatInformation\":{\"formatString\":\"G\",\"format\":\"General\",\"thousandSeparator\":false,\"currencyFormat\":null,\"dateTimeCustomFormat\":null}}]},{\"name\":\"FactTaxiHourly\",\"extends\":\"FactTaxiHourly\",\"measures\":[{\"name\":\"Total Trips Hourly\",\"dataType\":3,\"expression\":\"SUM(FactTaxiHourly[trip_count])\",\"errorMessage\":null,\"hidden\":false,\"formulaOverride\":null,\"formatInformation\":{\"formatString\":\"G\",\"format\":\"General\",\"thousandSeparator\":false,\"currencyFormat\":null,\"dateTimeCustomFormat\":null}},{\"name\":\"Avg Fare Hourly\",\"dataType\":3,\"expression\":\"\\nDIVIDE(\\n    SUM(FactTaxiHourly[total_revenue_usd]),\\n    SUM(FactTaxiHourly[trip_count])\\n)\",\"errorMessage\":null,\"hidden\":false,\"formulaOverride\":null,\"formatInformation\":{\"formatString\":\"G\",\"format\":\"General\",\"thousandSeparator\":false,\"currencyFormat\":null,\"dateTimeCustomFormat\":null}},{\"name\":\"Day Name\",\"dataType\":3,\"expression\":\"\\nSWITCH(\\n    SELECTEDVALUE(FactTaxiHourly[day_of_week]),\\n    1, \\\"Sun\\\", 2, \\\"Mon\\\", 3, \\\"Tue\\\", 4, \\\"Wed\\\",\\n    5, \\\"Thu\\\", 6, \\\"Fri\\\", 7, \\\"Sat\\\"\\n)\",\"errorMessage\":null,\"hidden\":false,\"formulaOverride\":null,\"formatInformation\":{\"formatString\":\"G\",\"format\":\"General\",\"thousandSeparator\":false,\"currencyFormat\":null,\"dateTimeCustomFormat\":null}},{\"name\":\"Hour Label\",\"dataType\":3,\"expression\":\"\\nFORMAT(SELECTEDVALUE(FactTaxiHourly[pickup_hour]), \\\"00\\\") & \\\":00\\\"\",\"errorMessage\":null,\"hidden\":false,\"formulaOverride\":null,\"formatInformation\":{\"formatString\":\"G\",\"format\":\"General\",\"thousandSeparator\":false,\"currencyFormat\":null,\"dateTimeCustomFormat\":null}},{\"name\":\"Peak Hour\",\"dataType\":3,\"expression\":\"\\nVAR PeakRow = \\n    TOPN(1,\\n        SUMMARIZE(FactTaxiHourly, FactTaxiHourly[pickup_hour], \\\"trips\\\", [Total Trips Hourly]),\\n        [trips], DESC\\n    )\\nRETURN\\n    FORMAT(MAXX(PeakRow, FactTaxiHourly[pickup_hour]), \\\"00\\\") & \\\":00\\\"\",\"errorMessage\":null,\"hidden\":false,\"references\":{\"unrecognizedReferences\":false,\"measures\":[{\"schema\":\"extension\",\"entity\":\"FactTaxiHourly\",\"name\":\"Total Trips Hourly\"}]},\"formulaOverride\":null,\"formatInformation\":{\"formatString\":\"G\",\"format\":\"General\",\"thousandSeparator\":false,\"currencyFormat\":null,\"dateTimeCustomFormat\":null}},{\"name\":\"Busiest Weekday\",\"dataType\":3,\"expression\":\"\\nVAR PeakRow = \\n    TOPN(1,\\n        SUMMARIZE(FactTaxiHourly, FactTaxiHourly[day_of_week], \\\"trips\\\", [Total Trips Hourly]),\\n        [trips], DESC\\n    )\\nVAR DayNum = MAXX(PeakRow, FactTaxiHourly[day_of_week])\\nRETURN\\n    SWITCH(DayNum, 1,\\\"Sun\\\",2,\\\"Mon\\\",3,\\\"Tue\\\",4,\\\"Wed\\\",5,\\\"Thu\\\",6,\\\"Fri\\\",7,\\\"Sat\\\")\",\"errorMessage\":null,\"hidden\":false,\"references\":{\"unrecognizedReferences\":false,\"measures\":[{\"schema\":\"extension\",\"entity\":\"FactTaxiHourly\",\"name\":\"Total Trips Hourly\"}]},\"formulaOverride\":null,\"formatInformation\":{\"formatString\":\"G\",\"format\":\"General\",\"thousandSeparator\":false,\"currencyFormat\":null,\"dateTimeCustomFormat\":null}},{\"name\":\"Avg Trips per Hour\",\"dataType\":3,\"expression\":\"DIVIDE([Total Trips Hourly], DISTINCTCOUNT(FactTaxiHourly[date_key]) * 24)\",\"errorMessage\":null,\"hidden\":false,\"references\":{\"unrecognizedReferences\":false,\"measures\":[{\"schema\":\"extension\",\"entity\":\"FactTaxiHourly\",\"name\":\"Total Trips Hourly\"}]},\"formulaOverride\":null,\"formatInformation\":{\"formatString\":\"G\",\"format\":\"General\",\"thousandSeparator\":false,\"currencyFormat\":null,\"dateTimeCustomFormat\":null}}]}]}],\"defaultDrillFilterOtherVisuals\":true,\"linguisticSchemaSyncVersion\":0,\"settings\":{\"useNewFilterPaneExperience\":true,\"allowChangeFilterTypes\":true,\"useStylableVisualContainerHeader\":true,\"queryLimitOption\":6,\"useEnhancedTooltips\":true,\"exportDataMode\":1,\"useDefaultAggregateDisplayName\":true},\"objects\":{\"section\":[{\"properties\":{\"verticalAlignment\":{\"expr\":{\"Literal\":{\"Value\":\"'Top'\"}}}}}],\"outspacePane\":[{\"properties\":{\"expanded\":{\"expr\":{\"Literal\":{\"Value\":\"false\"}}}}}]}}",
+  "layoutOptimization": 0,
+  "resourcePackages": [
+    {
+      "resourcePackage": {
+        "disabled": false,
+        "items": [
+          {
+            "name": "CY26SU05",
+            "path": "BaseThemes/CY26SU05.json",
+            "type": 202
+          }
+        ],
+        "name": "SharedResources",
+        "type": 2
+      }
+    }
+  ],
+  "sections": [
+    {
+      "config": "{}",
+      "displayName": "Long-term Trends",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.00,
+      "name": "318d5fa7b6763ec4d6e4",
+      "ordinal": 5,
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"0e3ddc6ed654f028db1d\",\"layouts\":[{\"id\":0,\"position\":{\"x\":9.651525068726272,\"y\":0,\"z\":0,\"width\":629.7620107343893,\"height\":445.1765937949993,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"lineChart\",\"projections\":{\"Category\":[{\"queryRef\":\"DimDate.year\",\"active\":true}],\"Y\":[{\"queryRef\":\"FactTaxiDaily.PM25 Index\"},{\"queryRef\":\"FactTaxiDaily.NO2 Index\"},{\"queryRef\":\"FactTaxiDaily.Trips Index\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DimDate\",\"Type\":0},{\"Name\":\"f\",\"Entity\":\"FactTaxiDaily\",\"Schema\":\"extension\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"year\"},\"Name\":\"DimDate.year\",\"NativeReferenceName\":\"year\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Trips Index\"},\"Name\":\"FactTaxiDaily.Trips Index\",\"NativeReferenceName\":\"Trips Index\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"PM25 Index\"},\"Name\":\"FactTaxiDaily.PM25 Index\",\"NativeReferenceName\":\"PM25 Index\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"NO2 Index\"},\"Name\":\"FactTaxiDaily.NO2 Index\",\"NativeReferenceName\":\"NO2 Index\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"PM25 Index\"}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Year-over-Year Growth Indices (Base = 2024)'\"}}}}}]}}}",
+          "filters": "[{\"name\":\"07a2ae2dfbae1267e70d\",\"expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"DimDate\"}},\"Property\":\"year\"}},\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DimDate\",\"Type\":0}],\"Where\":[{\"Condition\":{\"Not\":{\"Expression\":{\"In\":{\"Expressions\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"year\"}}],\"Values\":[[{\"Literal\":{\"Value\":\"2026L\"}}]]}}}}}]},\"type\":\"Categorical\",\"howCreated\":0,\"objects\":{\"general\":[{\"properties\":{\"isInvertedSelectionMode\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]},\"isHiddenInViewMode\":false}]",
+          "height": 445.18,
+          "width": 629.76,
+          "x": 9.65,
+          "y": 0.00,
+          "z": 0.00
+        },
+        {
+          "config": "{\"name\":\"c879f5ae14fcdb225045\",\"layouts\":[{\"id\":0,\"position\":{\"x\":741.9609896583322,\"y\":96.51525068726272,\"z\":1000,\"width\":483.78269406990444,\"height\":325.7389710695117,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"pivotTable\",\"projections\":{\"Rows\":[{\"queryRef\":\"DimDate.year\",\"active\":true}],\"Values\":[{\"queryRef\":\"FactTaxiDaily.Avg PM25\"},{\"queryRef\":\"FactTaxiDaily.Avg NO2\"},{\"queryRef\":\"CountNonNull(DimGDP.gdp_current_usd)\"},{\"queryRef\":\"FactTaxiDaily.Total Trips\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DimDate\",\"Type\":0},{\"Name\":\"f\",\"Entity\":\"FactTaxiDaily\",\"Type\":0},{\"Name\":\"d1\",\"Entity\":\"DimGDP\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"year\"},\"Name\":\"DimDate.year\",\"NativeReferenceName\":\"year\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Total Trips\"},\"Name\":\"FactTaxiDaily.Total Trips\",\"NativeReferenceName\":\"Total Trips\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Avg PM25\"},\"Name\":\"FactTaxiDaily.Avg PM25\",\"NativeReferenceName\":\"Avg PM25\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Avg NO2\"},\"Name\":\"FactTaxiDaily.Avg NO2\",\"NativeReferenceName\":\"Avg NO2\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d1\"}},\"Property\":\"gdp_current_usd\"}},\"Function\":0},\"Name\":\"CountNonNull(DimGDP.gdp_current_usd)\",\"NativeReferenceName\":\"Sum of gdp_current_usd\"}]},\"drillFilterOtherVisuals\":true}}",
+          "filters": "[]",
+          "height": 325.74,
+          "width": 483.78,
+          "x": 741.96,
+          "y": 96.52,
+          "z": 1000.00
+        }
+      ],
+      "width": 1280.00
+    },
+    {
+      "config": "{}",
+      "displayName": "Air Quality",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.00,
+      "name": "65d95043e2b4f9642456",
+      "ordinal": 1,
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"237ea3e240abe4983733\",\"layouts\":[{\"id\":0,\"position\":{\"x\":714.2857142857143,\"y\":15.714285714285715,\"z\":5000,\"width\":524.2857142857143,\"height\":278.5714285714286,\"tabOrder\":5000}}],\"singleVisual\":{\"visualType\":\"pivotTable\",\"projections\":{\"Columns\":[{\"queryRef\":\"FactAirQualityDaily.parameter_name\",\"active\":true}],\"Values\":[{\"queryRef\":\"Sum(FactAirQualityDaily.avg_value)\"}],\"Rows\":[{\"queryRef\":\"DimSensor.location_name\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"f\",\"Entity\":\"FactAirQualityDaily\",\"Type\":0},{\"Name\":\"d\",\"Entity\":\"DimSensor\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"parameter_name\"},\"Name\":\"FactAirQualityDaily.parameter_name\",\"NativeReferenceName\":\"parameter_name\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"avg_value\"}},\"Function\":1},\"Name\":\"Sum(FactAirQualityDaily.avg_value)\",\"NativeReferenceName\":\"Average of avg_value\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"location_name\"},\"Name\":\"DimSensor.location_name\",\"NativeReferenceName\":\"location_name\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}},\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Sensors by Pollutant (avg values)'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 278.57,
+          "width": 524.29,
+          "x": 714.29,
+          "y": 15.71,
+          "z": 5000.00
+        },
+        {
+          "config": "{\"name\":\"6401c31dca648f2ff3da\",\"layouts\":[{\"id\":0,\"position\":{\"x\":445.7142857142857,\"y\":0,\"z\":2000,\"width\":222.85714285714286,\"height\":150,\"tabOrder\":2000}}],\"singleVisual\":{\"visualType\":\"cardVisual\",\"projections\":{\"Data\":[{\"queryRef\":\"FactTaxiDaily.Avg NO2\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"f\",\"Entity\":\"FactTaxiDaily\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Avg NO2\"},\"Name\":\"FactTaxiDaily.Avg NO2\",\"NativeReferenceName\":\"Avg NO2 (ppm)\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Avg NO2\"}}}]},\"columnProperties\":{\"FactTaxiDaily.Avg NO2\":{\"displayName\":\"Avg NO2 (ppm)\"}},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "filters": "[]",
+          "height": 150.00,
+          "width": 222.86,
+          "x": 445.71,
+          "y": 0.00,
+          "z": 2000.00
+        },
+        {
+          "config": "{\"name\":\"7f1570bdeded9b5cb6fa\",\"layouts\":[{\"id\":0,\"position\":{\"x\":640,\"y\":316.6666666666667,\"z\":3000,\"width\":600,\"height\":340,\"tabOrder\":3000}}],\"singleVisual\":{\"visualType\":\"lineChart\",\"projections\":{\"Category\":[{\"queryRef\":\"DimDate.full_date\",\"active\":true}],\"Y\":[{\"queryRef\":\"FactTaxiDaily.Avg PM25\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DimDate\",\"Type\":0},{\"Name\":\"f\",\"Entity\":\"FactTaxiDaily\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"full_date\"},\"Name\":\"DimDate.full_date\",\"NativeReferenceName\":\"full_date\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Avg PM25\"},\"Name\":\"FactTaxiDaily.Avg PM25\",\"NativeReferenceName\":\"Avg PM25\"}],\"OrderBy\":[{\"Direction\":1,\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"full_date\"}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Daily PM2.5 Trend (µg/m³)'\"}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"17D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 340.00,
+          "width": 600.00,
+          "x": 640.00,
+          "y": 316.67,
+          "z": 3000.00
+        },
+        {
+          "config": "{\"name\":\"c95f6daca165011ef576\",\"layouts\":[{\"id\":0,\"position\":{\"x\":10,\"y\":0,\"z\":0,\"width\":222.85714285714286,\"height\":78.57142857142857,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"textbox\",\"drillFilterOtherVisuals\":true,\"objects\":{\"general\":[{\"properties\":{\"paragraphs\":[{\"textRuns\":[{\"value\":\"Air Quality\",\"textStyle\":{\"fontWeight\":\"bold\",\"fontSize\":\"28pt\"}}]}]}}]}}}",
+          "filters": "[]",
+          "height": 78.57,
+          "width": 222.86,
+          "x": 10.00,
+          "y": 0.00,
+          "z": 0.00
+        },
+        {
+          "config": "{\"name\":\"e989b4c44d61ad29fbc1\",\"layouts\":[{\"id\":0,\"position\":{\"x\":222.85714285714286,\"y\":0,\"z\":1000,\"width\":222.85714285714286,\"height\":150,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"cardVisual\",\"projections\":{\"Data\":[{\"queryRef\":\"FactTaxiDaily.Avg PM25\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"f\",\"Entity\":\"FactTaxiDaily\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Avg PM25\"},\"Name\":\"FactTaxiDaily.Avg PM25\",\"NativeReferenceName\":\"Avg PM25\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Avg PM25\"}}}]},\"columnProperties\":{\"FactTaxiDaily.Avg PM25\":{\"displayName\":\"Avg PM2.5 (µg/m³)\"}},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"objects\":{},\"vcObjects\":{\"title\":[{\"properties\":{\"show\":{\"expr\":{\"Literal\":{\"Value\":\"false\"}}},\"text\":{\"expr\":{\"Literal\":{\"Value\":\"''\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 150.00,
+          "width": 222.86,
+          "x": 222.86,
+          "y": 0.00,
+          "z": 1000.00
+        },
+        {
+          "config": "{\"name\":\"ea4a148804e29999cbc3\",\"layouts\":[{\"id\":0,\"position\":{\"x\":10,\"y\":317.14285714285717,\"z\":4000,\"width\":585.7142857142858,\"height\":392.8571428571429,\"tabOrder\":4000}}],\"singleVisual\":{\"visualType\":\"lineChart\",\"projections\":{\"Category\":[{\"queryRef\":\"DimDate.full_date\",\"active\":true}],\"Y\":[{\"queryRef\":\"FactTaxiDaily.Avg NO2\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DimDate\",\"Type\":0},{\"Name\":\"f\",\"Entity\":\"FactTaxiDaily\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"full_date\"},\"Name\":\"DimDate.full_date\",\"NativeReferenceName\":\"full_date\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Avg NO2\"},\"Name\":\"FactTaxiDaily.Avg NO2\",\"NativeReferenceName\":\"Avg NO2\"}],\"OrderBy\":[{\"Direction\":1,\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"full_date\"}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Daily NO2 Trend (ppm)'\"}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"16D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 392.86,
+          "width": 585.71,
+          "x": 10.00,
+          "y": 317.14,
+          "z": 4000.00
+        }
+      ],
+      "width": 1280.00
+    },
+    {
+      "config": "{}",
+      "displayName": "Mobility",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.00,
+      "name": "780a0de1b05a4a4a674a",
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"2a06bec3c6ccf76a0967\",\"layouts\":[{\"id\":0,\"position\":{\"x\":1074.4461381262668,\"y\":8.233303740431163,\"z\":5000,\"width\":160.5494229384077,\"height\":159.1772056483358,\"tabOrder\":5000}}],\"singleVisual\":{\"visualType\":\"listSlicer\",\"projections\":{\"Values\":[{\"queryRef\":\"DimDate.year\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DimDate\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"year\"},\"Name\":\"DimDate.year\",\"NativeReferenceName\":\"year\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"general\":[{\"properties\":{}}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Year'\"}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"17D\"}}}}}]}}}",
+          "filters": "[{\"name\":\"5b2bba21df8c356c6a5a\",\"expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"DimDate\"}},\"Property\":\"year\"}},\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DimDate\",\"Type\":0}],\"Where\":[{\"Condition\":{\"Not\":{\"Expression\":{\"In\":{\"Expressions\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"year\"}}],\"Values\":[[{\"Literal\":{\"Value\":\"null\"}}]]}}}}}]},\"type\":\"Categorical\",\"howCreated\":0,\"objects\":{\"general\":[{\"properties\":{\"isInvertedSelectionMode\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]},\"isHiddenInViewMode\":false}]",
+          "height": 159.18,
+          "width": 160.55,
+          "x": 1074.45,
+          "y": 8.23,
+          "z": 5000.00
+        },
+        {
+          "config": "{\"name\":\"394f02fb7ad10c3eb1f2\",\"layouts\":[{\"id\":0,\"position\":{\"x\":0,\"y\":50.77203973265884,\"z\":1000,\"width\":166.03829209869514,\"height\":193.48263790013235,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"cardVisual\",\"projections\":{\"Data\":[{\"queryRef\":\"FactTaxiDaily.Total Trips\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"f\",\"Entity\":\"FactTaxiDaily\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Total Trips\"},\"Name\":\"FactTaxiDaily.Total Trips\",\"NativeReferenceName\":\"Total Trips\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Total Trips\"}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "filters": "[]",
+          "height": 193.48,
+          "width": 166.04,
+          "x": 0.00,
+          "y": 50.77,
+          "z": 1000.00
+        },
+        {
+          "config": "{\"name\":\"40169e691b36b798c9ec\",\"layouts\":[{\"id\":0,\"position\":{\"x\":598.2867384713312,\"y\":244.25467763279119,\"z\":3000,\"width\":636.7088225933433,\"height\":458.3205748840014,\"tabOrder\":3000}}],\"singleVisual\":{\"visualType\":\"lineChart\",\"projections\":{\"Category\":[{\"queryRef\":\"DimDate.full_date\",\"active\":true}],\"Y\":[{\"queryRef\":\"FactTaxiDaily.Total Trips\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DimDate\",\"Type\":0},{\"Name\":\"f\",\"Entity\":\"FactTaxiDaily\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"full_date\"},\"Name\":\"DimDate.full_date\",\"NativeReferenceName\":\"full_date\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Total Trips\"},\"Name\":\"FactTaxiDaily.Total Trips\",\"NativeReferenceName\":\"Total Trips\"}],\"OrderBy\":[{\"Direction\":1,\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"full_date\"}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Daily Trip Volume'\"}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"20D\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 458.32,
+          "width": 636.71,
+          "x": 598.29,
+          "y": 244.25,
+          "z": 3000.00
+        },
+        {
+          "config": "{\"name\":\"8f85698f3d1a07e768e2\",\"layouts\":[{\"id\":0,\"position\":{\"x\":146.82725003768908,\"y\":8.233303740431163,\"z\":0,\"width\":279.9323271746596,\"height\":279.9323271746596,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"cardVisual\",\"projections\":{\"Data\":[{\"queryRef\":\"FactTaxiDaily.Avg Fare USD\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"f\",\"Entity\":\"FactTaxiDaily\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Avg Fare USD\"},\"Name\":\"FactTaxiDaily.Avg Fare USD\",\"NativeReferenceName\":\"Avg Fare USD\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Avg Fare USD\"}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "filters": "[]",
+          "height": 279.93,
+          "width": 279.93,
+          "x": 146.83,
+          "y": 8.23,
+          "z": 0.00
+        },
+        {
+          "config": "{\"name\":\"b631056609a63abaeaa4\",\"layouts\":[{\"id\":0,\"position\":{\"x\":35.67764954186838,\"y\":225.04363557178513,\"z\":4000,\"width\":532.4203085478819,\"height\":495.3704417159417,\"tabOrder\":4000}}],\"singleVisual\":{\"visualType\":\"barChart\",\"projections\":{\"Category\":[{\"queryRef\":\"DimZone.zone_name\",\"active\":true}],\"Y\":[{\"queryRef\":\"FactTaxiDaily.Total Trips\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DimZone\",\"Type\":0},{\"Name\":\"f\",\"Entity\":\"FactTaxiDaily\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"zone_name\"},\"Name\":\"DimZone.zone_name\",\"NativeReferenceName\":\"zone_name\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Total Trips\"},\"Name\":\"FactTaxiDaily.Total Trips\",\"NativeReferenceName\":\"Total Trips\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Total Trips\"}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Top 10 Busiest Pickup Zones'\"}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"18D\"}}}}}]}}}",
+          "filters": "[{\"expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"DimZone\"}},\"Property\":\"zone_name\"}},\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"subquery\",\"Expression\":{\"Subquery\":{\"Query\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DimZone\",\"Type\":0},{\"Name\":\"f\",\"Entity\":\"FactTaxiDaily\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"zone_name\"},\"Name\":\"field\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Total Trips\"}}}],\"Top\":10}}},\"Type\":2},{\"Name\":\"d\",\"Entity\":\"DimZone\",\"Type\":0}],\"Where\":[{\"Condition\":{\"In\":{\"Expressions\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"zone_name\"}}],\"Table\":{\"SourceRef\":{\"Source\":\"subquery\"}}}}}]},\"type\":\"TopN\",\"howCreated\":0,\"isHiddenInViewMode\":false}]",
+          "height": 495.37,
+          "width": 532.42,
+          "x": 35.68,
+          "y": 225.04,
+          "z": 4000.00
+        },
+        {
+          "config": "{\"name\":\"cf8c0f8c4c414c66777e\",\"layouts\":[{\"id\":0,\"position\":{\"x\":12.720935850098346,\"y\":0,\"z\":2000,\"width\":465.02087718692843,\"height\":80.56592705062286,\"tabOrder\":2000}}],\"singleVisual\":{\"visualType\":\"textbox\",\"drillFilterOtherVisuals\":true,\"objects\":{\"general\":[{\"properties\":{\"paragraphs\":[{\"textRuns\":[{\"value\":\"Mobility dashboard\",\"textStyle\":{\"fontWeight\":\"bold\",\"fontSize\":\"28pt\"}}]}]}}]}}}",
+          "filters": "[]",
+          "height": 80.57,
+          "width": 465.02,
+          "x": 12.72,
+          "y": 0.00,
+          "z": 2000.00
+        }
+      ],
+      "width": 1280.00
+    },
+    {
+      "config": "{}",
+      "displayName": "Mobility — Time Patterns",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.00,
+      "name": "99ae7beb1476db5eecec",
+      "ordinal": 3,
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"11f10c2472e85e234d90\",\"layouts\":[{\"id\":0,\"position\":{\"x\":10.977738320574884,\"y\":85.07747198445536,\"z\":0,\"width\":773.9305516005294,\"height\":274.44345801437214,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"pivotTable\",\"projections\":{\"Rows\":[{\"queryRef\":\"FactTaxiHourly.day_of_week\",\"active\":true}],\"Columns\":[{\"queryRef\":\"FactTaxiHourly.pickup_hour\",\"active\":true}],\"Values\":[{\"queryRef\":\"FactTaxiHourly.Total Trips Hourly\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"f\",\"Entity\":\"FactTaxiHourly\",\"Type\":0},{\"Name\":\"f1\",\"Entity\":\"FactTaxiHourly\",\"Schema\":\"extension\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"day_of_week\"},\"Name\":\"FactTaxiHourly.day_of_week\",\"NativeReferenceName\":\"day_of_week\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"pickup_hour\"},\"Name\":\"FactTaxiHourly.pickup_hour\",\"NativeReferenceName\":\"pickup_hour\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f1\"}},\"Property\":\"Total Trips Hourly\"},\"Name\":\"FactTaxiHourly.Total Trips Hourly\",\"NativeReferenceName\":\"Total Trips Hourly\"}],\"OrderBy\":[{\"Direction\":1,\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"day_of_week\"}}}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"values\":[{\"properties\":{\"backColor\":{\"solid\":{\"color\":{\"expr\":{\"FillRule\":{\"Input\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Schema\":\"extension\",\"Entity\":\"FactTaxiHourly\"}},\"Property\":\"Total Trips Hourly\"}},\"FillRule\":{\"linearGradient2\":{\"min\":{\"color\":{\"Literal\":{\"Value\":\"'#FFF3B0'\"}}},\"max\":{\"color\":{\"Literal\":{\"Value\":\"'#B91C1C'\"}}},\"nullColoringStrategy\":{\"strategy\":{\"Literal\":{\"Value\":\"'asZero'\"}}}}}}}}}}},\"selector\":{\"data\":[{\"dataViewWildcard\":{\"matchingOption\":1}}],\"metadata\":\"FactTaxiHourly.Total Trips Hourly\"}}]}}}",
+          "filters": "[]",
+          "height": 274.44,
+          "width": 773.93,
+          "x": 10.98,
+          "y": 85.08,
+          "z": 0.00
+        },
+        {
+          "config": "{\"name\":\"2cd4197bc9e7f55de938\",\"layouts\":[{\"id\":0,\"position\":{\"x\":845.2858506842662,\"y\":41.16651870215582,\"z\":2000,\"width\":377.35975476976165,\"height\":222.2992009916414,\"tabOrder\":2000}}],\"singleVisual\":{\"visualType\":\"cardVisual\",\"projections\":{\"Data\":[{\"queryRef\":\"FactTaxiHourly.Peak Hour\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"f\",\"Entity\":\"FactTaxiHourly\",\"Schema\":\"extension\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Peak Hour\"},\"Name\":\"FactTaxiHourly.Peak Hour\",\"NativeReferenceName\":\"Peak Hour\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Peak Hour\"}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "filters": "[]",
+          "height": 222.30,
+          "width": 377.36,
+          "x": 845.29,
+          "y": 41.17,
+          "z": 2000.00
+        },
+        {
+          "config": "{\"name\":\"307d53085d5ed72a960c\",\"layouts\":[{\"id\":0,\"position\":{\"x\":1077.1905727064106,\"y\":41.16651870215582,\"z\":5000,\"width\":160.5494229384077,\"height\":159.1772056483358,\"tabOrder\":5000}}],\"singleVisual\":{\"visualType\":\"listSlicer\",\"projections\":{\"Values\":[{\"queryRef\":\"DimDate.year\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DimDate\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"year\"},\"Name\":\"DimDate.year\",\"NativeReferenceName\":\"year\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"general\":[{\"properties\":{}}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Year'\"}}},\"fontSize\":{\"expr\":{\"Literal\":{\"Value\":\"17D\"}}}}}]}}}",
+          "filters": "[{\"name\":\"5b2bba21df8c356c6a5a\",\"expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"DimDate\"}},\"Property\":\"year\"}},\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DimDate\",\"Type\":0}],\"Where\":[{\"Condition\":{\"Not\":{\"Expression\":{\"In\":{\"Expressions\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"year\"}}],\"Values\":[[{\"Literal\":{\"Value\":\"null\"}}]]}}}}}]},\"type\":\"Categorical\",\"howCreated\":0,\"objects\":{\"general\":[{\"properties\":{\"isInvertedSelectionMode\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]},\"isHiddenInViewMode\":false}]",
+          "height": 159.18,
+          "width": 160.55,
+          "x": 1077.19,
+          "y": 41.17,
+          "z": 5000.00
+        },
+        {
+          "config": "{\"name\":\"500364e19c82b8c72cf6\",\"layouts\":[{\"id\":0,\"position\":{\"x\":845.2858506842662,\"y\":222.2992009916414,\"z\":3000,\"width\":241.51024305264747,\"height\":179.76046499941373,\"tabOrder\":3000}}],\"singleVisual\":{\"visualType\":\"cardVisual\",\"projections\":{\"Data\":[{\"queryRef\":\"FactTaxiHourly.Busiest Weekday\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"f\",\"Entity\":\"FactTaxiHourly\",\"Schema\":\"extension\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Busiest Weekday\"},\"Name\":\"FactTaxiHourly.Busiest Weekday\",\"NativeReferenceName\":\"Busiest Weekday\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Busiest Weekday\"}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "filters": "[]",
+          "height": 179.76,
+          "width": 241.51,
+          "x": 845.29,
+          "y": 222.30,
+          "z": 3000.00
+        },
+        {
+          "config": "{\"name\":\"db5c961feda50bb2653b\",\"layouts\":[{\"id\":0,\"position\":{\"x\":9.605521030503024,\"y\":402.05966599105517,\"z\":1000,\"width\":775.3027688906012,\"height\":274.44345801437214,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"clusteredColumnChart\",\"projections\":{\"Category\":[{\"queryRef\":\"FactTaxiHourly.pickup_hour\",\"active\":true}],\"Y\":[{\"queryRef\":\"FactTaxiHourly.Avg Fare Hourly\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"f\",\"Entity\":\"FactTaxiHourly\",\"Type\":0},{\"Name\":\"f1\",\"Entity\":\"FactTaxiHourly\",\"Schema\":\"extension\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"pickup_hour\"},\"Name\":\"FactTaxiHourly.pickup_hour\",\"NativeReferenceName\":\"pickup_hour\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f1\"}},\"Property\":\"Avg Fare Hourly\"},\"Name\":\"FactTaxiHourly.Avg Fare Hourly\",\"NativeReferenceName\":\"Avg Fare Hourly\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f1\"}},\"Property\":\"Avg Fare Hourly\"}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Average Fare by Hour ($)'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 274.44,
+          "width": 775.30,
+          "x": 9.61,
+          "y": 402.06,
+          "z": 1000.00
+        },
+        {
+          "config": "{\"name\":\"dd200220813fc70660be\",\"layouts\":[{\"id\":0,\"position\":{\"x\":845.2858506842662,\"y\":402.05966599105517,\"z\":4000,\"width\":231.90472202214443,\"height\":185.2493341597012,\"tabOrder\":4000}}],\"singleVisual\":{\"visualType\":\"cardVisual\",\"projections\":{\"Data\":[{\"queryRef\":\"FactTaxiHourly.Avg Trips per Hour\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"f\",\"Entity\":\"FactTaxiHourly\",\"Schema\":\"extension\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Avg Trips per Hour\"},\"Name\":\"FactTaxiHourly.Avg Trips per Hour\",\"NativeReferenceName\":\"Avg Trips per Hour\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Avg Trips per Hour\"}}}]},\"columnProperties\":{\"FactTaxiHourly.Avg Trips per Hour\":{\"formatString\":\"0.000\"}},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "filters": "[]",
+          "height": 185.25,
+          "width": 231.90,
+          "x": 845.29,
+          "y": 402.06,
+          "z": 4000.00
+        }
+      ],
+      "width": 1280.00
+    },
+    {
+      "config": "{}",
+      "displayName": "Correlation",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.00,
+      "name": "d4882b5fd048b3f96c75",
+      "ordinal": 2,
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"1e72bf03e53bc6b986e8\",\"layouts\":[{\"id\":0,\"position\":{\"x\":0,\"y\":130.36064255682675,\"z\":4000,\"width\":476.1593996549356,\"height\":296.3989346555219,\"tabOrder\":4000}}],\"singleVisual\":{\"visualType\":\"lineStackedColumnComboChart\",\"projections\":{\"Category\":[{\"queryRef\":\"DimDate.full_date\",\"active\":true}],\"Y\":[{\"queryRef\":\"FactTaxiDaily.Total Trips\"}],\"Y2\":[{\"queryRef\":\"FactTaxiDaily.Avg NO2\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DimDate\",\"Type\":0},{\"Name\":\"f\",\"Entity\":\"FactTaxiDaily\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"full_date\"},\"Name\":\"DimDate.full_date\",\"NativeReferenceName\":\"full_date\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Total Trips\"},\"Name\":\"FactTaxiDaily.Total Trips\",\"NativeReferenceName\":\"Total Trips\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Avg NO2\"},\"Name\":\"FactTaxiDaily.Avg NO2\",\"NativeReferenceName\":\"Avg NO2\"}],\"OrderBy\":[{\"Direction\":1,\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"full_date\"}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Daily Trip Volume (columns) overlaid with PM2.5 (line)'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 296.40,
+          "width": 476.16,
+          "x": 0.00,
+          "y": 130.36,
+          "z": 4000.00
+        },
+        {
+          "config": "{\"name\":\"7c63057b8ac97d99121e\",\"layouts\":[{\"id\":0,\"position\":{\"x\":0,\"y\":415.78183889177376,\"z\":1000,\"width\":466.55387862443257,\"height\":304.63223839595304,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"lineStackedColumnComboChart\",\"projections\":{\"Category\":[{\"queryRef\":\"DimDate.full_date\",\"active\":true}],\"Y\":[{\"queryRef\":\"FactTaxiDaily.Total Trips\"}],\"Y2\":[{\"queryRef\":\"FactTaxiDaily.Avg PM25\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DimDate\",\"Type\":0},{\"Name\":\"f\",\"Entity\":\"FactTaxiDaily\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"full_date\"},\"Name\":\"DimDate.full_date\",\"NativeReferenceName\":\"full_date\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Total Trips\"},\"Name\":\"FactTaxiDaily.Total Trips\",\"NativeReferenceName\":\"Total Trips\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Avg PM25\"},\"Name\":\"FactTaxiDaily.Avg PM25\",\"NativeReferenceName\":\"Avg PM25\"}],\"OrderBy\":[{\"Direction\":1,\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"full_date\"}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Daily Trip Volume (columns) overlaid with PM2.5 (line)'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 304.63,
+          "width": 466.55,
+          "x": 0.00,
+          "y": 415.78,
+          "z": 1000.00
+        },
+        {
+          "config": "{\"name\":\"9a5f3c45085010a17b00\",\"layouts\":[{\"id\":0,\"position\":{\"x\":977.5,\"y\":141.25,\"z\":8000,\"width\":285,\"height\":285,\"tabOrder\":8000}}],\"singleVisual\":{\"visualType\":\"scatterChart\",\"projections\":{\"X\":[{\"queryRef\":\"FactTaxiHourly.Total Trips Hourly\",\"active\":true}],\"Y\":[{\"queryRef\":\"FactTaxiDaily.Avg PM25\"}],\"Series\":[{\"queryRef\":\"FactTaxiHourly.pickup_hour\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"f\",\"Entity\":\"FactTaxiHourly\",\"Schema\":\"extension\",\"Type\":0},{\"Name\":\"f1\",\"Entity\":\"FactTaxiDaily\",\"Type\":0},{\"Name\":\"f2\",\"Entity\":\"FactTaxiHourly\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Total Trips Hourly\"},\"Name\":\"FactTaxiHourly.Total Trips Hourly\",\"NativeReferenceName\":\"Total Trips Hourly\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f1\"}},\"Property\":\"Avg PM25\"},\"Name\":\"FactTaxiDaily.Avg PM25\",\"NativeReferenceName\":\"Avg PM25\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f2\"}},\"Property\":\"pickup_hour\"},\"Name\":\"FactTaxiHourly.pickup_hour\",\"NativeReferenceName\":\"pickup_hour\"}]},\"drillFilterOtherVisuals\":true}}",
+          "filters": "[]",
+          "height": 285.00,
+          "width": 285.00,
+          "x": 977.50,
+          "y": 141.25,
+          "z": 8000.00
+        },
+        {
+          "config": "{\"name\":\"c2360dbbfc36d2335870\",\"layouts\":[{\"id\":0,\"position\":{\"x\":466.55387862443257,\"y\":130.36064255682675,\"z\":5000,\"width\":511.837049196804,\"height\":285.421196334947,\"tabOrder\":5000}}],\"singleVisual\":{\"visualType\":\"scatterChart\",\"projections\":{\"Category\":[{\"queryRef\":\"DimDate.full_date\",\"active\":true}],\"X\":[{\"queryRef\":\"FactTaxiDaily.Total Trips\",\"active\":true}],\"Y\":[{\"queryRef\":\"FactTaxiDaily.Avg NO2\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DimDate\",\"Type\":0},{\"Name\":\"f\",\"Entity\":\"FactTaxiDaily\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"full_date\"},\"Name\":\"DimDate.full_date\",\"NativeReferenceName\":\"full_date\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Total Trips\"},\"Name\":\"FactTaxiDaily.Total Trips\",\"NativeReferenceName\":\"Total Trips\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Avg NO2\"},\"Name\":\"FactTaxiDaily.Avg NO2\",\"NativeReferenceName\":\"Avg NO2\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Daily Trips vs NO2'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 285.42,
+          "width": 511.84,
+          "x": 466.55,
+          "y": 130.36,
+          "z": 5000.00
+        },
+        {
+          "config": "{\"name\":\"d4aeafff53c797dbbc65\",\"layouts\":[{\"id\":0,\"position\":{\"x\":964.668754920518,\"y\":10.977738320574884,\"z\":7000,\"width\":299.1433692356656,\"height\":119.38290423625187,\"tabOrder\":7000}}],\"singleVisual\":{\"visualType\":\"cardVisual\",\"projections\":{\"Data\":[{\"queryRef\":\"DimDate.Corr Trips vs NO2\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DimDate\",\"Schema\":\"extension\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Corr Trips vs NO2\"},\"Name\":\"DimDate.Corr Trips vs NO2\",\"NativeReferenceName\":\"Corr Trips vs NO2\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Corr Trips vs NO2\"}}}]},\"columnProperties\":{\"DimDate.Corr Trips vs NO2\":{\"formatString\":\"0.000\"}},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "filters": "[]",
+          "height": 119.38,
+          "width": 299.14,
+          "x": 964.67,
+          "y": 10.98,
+          "z": 7000.00
+        },
+        {
+          "config": "{\"name\":\"da80aae5031628cb5ced\",\"layouts\":[{\"id\":0,\"position\":{\"x\":439.1095328229954,\"y\":10.977738320574884,\"z\":3000,\"width\":200.34372435049164,\"height\":86.44968927452722,\"tabOrder\":3000}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"DimDate.year\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DimDate\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"year\"},\"Name\":\"DimDate.year\",\"NativeReferenceName\":\"year\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"data\":[{\"properties\":{\"mode\":{\"expr\":{\"Literal\":{\"Value\":\"'Basic'\"}}}}}],\"general\":[{\"properties\":{\"orientation\":{\"expr\":{\"Literal\":{\"Value\":\"0D\"}}}}}]}}}",
+          "filters": "[{\"name\":\"40e79f48884e1313a90e\",\"expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"DimDate\"}},\"Property\":\"year\"}},\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DimDate\",\"Type\":0}],\"Where\":[{\"Condition\":{\"Not\":{\"Expression\":{\"In\":{\"Expressions\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"year\"}}],\"Values\":[[{\"Literal\":{\"Value\":\"null\"}}]]}}}}}]},\"type\":\"Categorical\",\"howCreated\":0,\"objects\":{\"general\":[{\"properties\":{\"isInvertedSelectionMode\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]},\"isHiddenInViewMode\":false}]",
+          "height": 86.45,
+          "width": 200.34,
+          "x": 439.11,
+          "y": 10.98,
+          "z": 3000.00
+        },
+        {
+          "config": "{\"name\":\"ece134c6a79f7899b2e3\",\"layouts\":[{\"id\":0,\"position\":{\"x\":661.4087338146368,\"y\":0,\"z\":6000,\"width\":316.9821940065998,\"height\":130.36064255682675,\"tabOrder\":6000}}],\"singleVisual\":{\"visualType\":\"cardVisual\",\"projections\":{\"Data\":[{\"queryRef\":\"DimDate.Corr Trips vs PM25\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DimDate\",\"Schema\":\"extension\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Corr Trips vs PM25\"},\"Name\":\"DimDate.Corr Trips vs PM25\",\"NativeReferenceName\":\"Corr Trips vs PM25\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"Corr Trips vs PM25\"}}}]},\"columnProperties\":{\"DimDate.Corr Trips vs PM25\":{\"formatString\":\"0.000\"}},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "filters": "[]",
+          "height": 130.36,
+          "width": 316.98,
+          "x": 661.41,
+          "y": 0.00,
+          "z": 6000.00
+        },
+        {
+          "config": "{\"name\":\"f2fa934f83627b98a15d\",\"layouts\":[{\"id\":0,\"position\":{\"x\":0,\"y\":0,\"z\":0,\"width\":417.1540561818456,\"height\":54.888691602874424,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"textbox\",\"drillFilterOtherVisuals\":true,\"objects\":{\"general\":[{\"properties\":{\"paragraphs\":[{\"textRuns\":[{\"value\":\"Mobility vs Air Quality \",\"textStyle\":{\"fontWeight\":\"bold\",\"fontSize\":\"24pt\"}}]}]}}]}}}",
+          "filters": "[]",
+          "height": 54.89,
+          "width": 417.15,
+          "x": 0.00,
+          "y": 0.00,
+          "z": 0.00
+        },
+        {
+          "config": "{\"name\":\"fbb2cd3853f7090ef826\",\"layouts\":[{\"id\":0,\"position\":{\"x\":476.1593996549356,\"y\":426.75957721234863,\"z\":2000,\"width\":441.8539674031391,\"height\":285.421196334947,\"tabOrder\":2000}}],\"singleVisual\":{\"visualType\":\"scatterChart\",\"projections\":{\"Category\":[{\"queryRef\":\"DimDate.full_date\",\"active\":true}],\"X\":[{\"queryRef\":\"FactTaxiDaily.Total Trips\",\"active\":true}],\"Y\":[{\"queryRef\":\"FactTaxiDaily.Avg PM25\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DimDate\",\"Type\":0},{\"Name\":\"f\",\"Entity\":\"FactTaxiDaily\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"full_date\"},\"Name\":\"DimDate.full_date\",\"NativeReferenceName\":\"full_date\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Total Trips\"},\"Name\":\"FactTaxiDaily.Total Trips\",\"NativeReferenceName\":\"Total Trips\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Avg PM25\"},\"Name\":\"FactTaxiDaily.Avg PM25\",\"NativeReferenceName\":\"Avg PM25\"}]},\"drillFilterOtherVisuals\":true,\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Daily Trips vs PM2.5'\"}}}}}]}}}",
+          "filters": "[]",
+          "height": 285.42,
+          "width": 441.85,
+          "x": 476.16,
+          "y": 426.76,
+          "z": 2000.00
+        }
+      ],
+      "width": 1280.00
+    },
+    {
+      "config": "{\"objects\":{\"outspacePane\":[{\"properties\":{\"width\":{\"expr\":{\"Literal\":{\"Value\":\"200L\"}}}}}]}}",
+      "displayName": "Economic",
+      "displayOption": 1,
+      "filters": "[]",
+      "height": 720.00,
+      "name": "df4b97b9295d0c01112a",
+      "ordinal": 4,
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"1403f7d90d340b06c604\",\"layouts\":[{\"id\":0,\"position\":{\"x\":492.2277785050399,\"y\":326.9454117031025,\"z\":4000,\"width\":457.24100013090714,\"height\":255.76541432124623,\"tabOrder\":4000}}],\"singleVisual\":{\"visualType\":\"lineChart\",\"projections\":{\"Y\":[{\"queryRef\":\"FactTaxiDaily.Avg FX Rate\"}],\"Category\":[{\"queryRef\":\"DimFX.rate_date\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"f\",\"Entity\":\"FactTaxiDaily\",\"Type\":0},{\"Name\":\"d\",\"Entity\":\"DimFX\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Avg FX Rate\"},\"Name\":\"FactTaxiDaily.Avg FX Rate\",\"NativeReferenceName\":\"Avg FX Rate\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"rate_date\"},\"Name\":\"DimFX.rate_date\",\"NativeReferenceName\":\"rate_date\"}],\"OrderBy\":[{\"Direction\":1,\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"rate_date\"}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "filters": "[]",
+          "height": 255.77,
+          "width": 457.24,
+          "x": 492.23,
+          "y": 326.95,
+          "z": 4000.00
+        },
+        {
+          "config": "{\"name\":\"466c617890b90f2d26ec\",\"layouts\":[{\"id\":0,\"position\":{\"x\":721.4514988872888,\"y\":7.238643801544704,\"z\":8000,\"width\":161.66304490116505,\"height\":141.15355413012173,\"tabOrder\":8000}}],\"singleVisual\":{\"visualType\":\"cardVisual\",\"projections\":{\"Data\":[{\"queryRef\":\"FactTaxiDaily.Avg Fare USD\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"f1\",\"Entity\":\"FactTaxiDaily\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f1\"}},\"Property\":\"Avg Fare USD\"},\"Name\":\"FactTaxiDaily.Avg Fare USD\",\"NativeReferenceName\":\"Avg Fare USD\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f1\"}},\"Property\":\"Avg Fare USD\"}}}]},\"columnProperties\":{\"FactTaxiDaily.Avg Fare USD\":{\"formatString\":\"\\\\$#,0.00;(\\\\$#,0.00);\\\\$#,0.00\"}},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "filters": "[]",
+          "height": 141.15,
+          "width": 161.66,
+          "x": 721.45,
+          "y": 7.24,
+          "z": 8000.00
+        },
+        {
+          "config": "{\"name\":\"468933595d69d3a38bea\",\"layouts\":[{\"id\":0,\"position\":{\"x\":9.605521030503024,\"y\":0,\"z\":0,\"width\":321.0988458768154,\"height\":69.9830817936649,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"textbox\",\"drillFilterOtherVisuals\":true,\"objects\":{\"general\":[{\"properties\":{\"paragraphs\":[{\"textRuns\":[{\"value\":\"Economic Impact\",\"textStyle\":{\"fontWeight\":\"bold\",\"fontSize\":\"28pt\"}}]}]}}]}}}",
+          "filters": "[]",
+          "height": 69.98,
+          "width": 321.10,
+          "x": 9.61,
+          "y": 0.00,
+          "z": 0.00
+        },
+        {
+          "config": "{\"name\":\"7a7d6dd4a911291202b1\",\"layouts\":[{\"id\":0,\"position\":{\"x\":9.605521030503024,\"y\":56.26090889294628,\"z\":1000,\"width\":321.0988458768154,\"height\":149.5716846178328,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"cardVisual\",\"projections\":{\"Data\":[{\"queryRef\":\"FactTaxiDaily.Total Revenue EUR\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"f\",\"Entity\":\"FactTaxiDaily\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Total Revenue EUR\"},\"Name\":\"FactTaxiDaily.Total Revenue EUR\",\"NativeReferenceName\":\"Total Revenue EUR\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Total Revenue EUR\"}}}]},\"columnProperties\":{\"FactTaxiDaily.Total Revenue EUR\":{\"formatString\":\"\\\"€\\\" #,0.00;-\\\"€\\\" #,0.00;\\\"€\\\" #,0.00\"}},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "filters": "[]",
+          "height": 149.57,
+          "width": 321.10,
+          "x": 9.61,
+          "y": 56.26,
+          "z": 1000.00
+        },
+        {
+          "config": "{\"name\":\"8f591b7024e63e83de87\",\"layouts\":[{\"id\":0,\"position\":{\"x\":873.4630187197276,\"y\":7.238643801544704,\"z\":7000,\"width\":174.9338918706637,\"height\":141.15355413012173,\"tabOrder\":7000}}],\"singleVisual\":{\"visualType\":\"cardVisual\",\"projections\":{\"Data\":[{\"queryRef\":\"FactTaxiDaily.Avg Fare EUR\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"f\",\"Entity\":\"FactTaxiDaily\",\"Schema\":\"extension\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Avg Fare EUR\"},\"Name\":\"FactTaxiDaily.Avg Fare EUR\",\"NativeReferenceName\":\"Avg Fare EUR\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Avg Fare EUR\"}}}]},\"columnProperties\":{\"FactTaxiDaily.Avg Fare EUR\":{\"formatString\":\"\\\"€\\\" #,0.00;-\\\"€\\\" #,0.00;\\\"€\\\" #,0.00\"}},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "filters": "[]",
+          "height": 141.15,
+          "width": 174.93,
+          "x": 873.46,
+          "y": 7.24,
+          "z": 7000.00
+        },
+        {
+          "config": "{\"name\":\"a77969cdaee3453030fb\",\"layouts\":[{\"id\":0,\"position\":{\"x\":240.08168608456603,\"y\":65.14779421390234,\"z\":5000,\"width\":381.23524021468774,\"height\":180.9660950386176,\"tabOrder\":5000}}],\"singleVisual\":{\"visualType\":\"clusteredColumnChart\",\"projections\":{\"Category\":[{\"queryRef\":\"DimGDP.year\",\"active\":true}],\"Y\":[{\"queryRef\":\"CountNonNull(DimGDP.gdp_current_usd)\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DimGDP\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"year\"},\"Name\":\"DimGDP.year\",\"NativeReferenceName\":\"year\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"gdp_current_usd\"}},\"Function\":0},\"Name\":\"CountNonNull(DimGDP.gdp_current_usd)\",\"NativeReferenceName\":\"Sum of gdp_current_usd\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"gdp_current_usd\"}},\"Function\":0}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "filters": "[]",
+          "height": 180.97,
+          "width": 381.24,
+          "x": 240.08,
+          "y": 65.15,
+          "z": 5000.00
+        },
+        {
+          "config": "{\"name\":\"cf4bef9c8ffdc6faec04\",\"layouts\":[{\"id\":0,\"position\":{\"x\":9.605521030503024,\"y\":326.58771503710284,\"z\":3000,\"width\":483.02048610529494,\"height\":282.6767617548033,\"tabOrder\":3000}}],\"singleVisual\":{\"visualType\":\"lineChart\",\"projections\":{\"Category\":[{\"queryRef\":\"DimDate.full_date\",\"active\":true}],\"Y\":[{\"queryRef\":\"FactTaxiDaily.Total Revenue EUR\"},{\"queryRef\":\"FactTaxiDaily.Total Revenue USD\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DimDate\",\"Type\":0},{\"Name\":\"f\",\"Entity\":\"FactTaxiDaily\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"full_date\"},\"Name\":\"DimDate.full_date\",\"NativeReferenceName\":\"full_date\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Total Revenue EUR\"},\"Name\":\"FactTaxiDaily.Total Revenue EUR\",\"NativeReferenceName\":\"Total Revenue EUR\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Total Revenue USD\"},\"Name\":\"FactTaxiDaily.Total Revenue USD\",\"NativeReferenceName\":\"Total Revenue USD\"}],\"OrderBy\":[{\"Direction\":1,\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"full_date\"}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "filters": "[]",
+          "height": 282.68,
+          "width": 483.02,
+          "x": 9.61,
+          "y": 326.59,
+          "z": 3000.00
+        },
+        {
+          "config": "{\"name\":\"d177352fefef83df121b\",\"layouts\":[{\"id\":0,\"position\":{\"x\":639.4135358031156,\"y\":74.79931928262862,\"z\":6000,\"width\":196.6498232752978,\"height\":143.5664353973033,\"tabOrder\":6000}}],\"singleVisual\":{\"visualType\":\"listSlicer\",\"projections\":{\"Values\":[{\"queryRef\":\"DimDate.year\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DimDate\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"year\"},\"Name\":\"DimDate.year\",\"NativeReferenceName\":\"year\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"data\":[{\"properties\":{}}],\"general\":[{\"properties\":{}}]}}}",
+          "filters": "[{\"name\":\"4933a159d950781be92e\",\"expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"DimDate\"}},\"Property\":\"year\"}},\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"DimDate\",\"Type\":0}],\"Where\":[{\"Condition\":{\"Not\":{\"Expression\":{\"In\":{\"Expressions\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"year\"}}],\"Values\":[[{\"Literal\":{\"Value\":\"null\"}}]]}}}}}]},\"type\":\"Categorical\",\"howCreated\":0,\"objects\":{\"general\":[{\"properties\":{\"isInvertedSelectionMode\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}]},\"isHiddenInViewMode\":false}]",
+          "height": 143.57,
+          "width": 196.65,
+          "x": 639.41,
+          "y": 74.80,
+          "z": 6000.00
+        },
+        {
+          "config": "{\"name\":\"dfc52d126dffc15130fc\",\"layouts\":[{\"id\":0,\"position\":{\"x\":9.605521030503024,\"y\":175.64381312919815,\"z\":2000,\"width\":321.0988458768154,\"height\":150.94390190790466,\"tabOrder\":2000}}],\"singleVisual\":{\"visualType\":\"cardVisual\",\"projections\":{\"Data\":[{\"queryRef\":\"FactTaxiDaily.Total Revenue USD (FX days)\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"f\",\"Entity\":\"FactTaxiDaily\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Total Revenue USD (FX days)\"},\"Name\":\"FactTaxiDaily.Total Revenue USD (FX days)\",\"NativeReferenceName\":\"Total Revenue USD (FX days)\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Total Revenue USD (FX days)\"}}}]},\"columnProperties\":{\"FactTaxiDaily.Total Revenue USD\":{\"formatString\":null},\"FactTaxiDaily.Total Revenue USD (FX days)\":{\"formatString\":\"\\\\$#,0.00;(\\\\$#,0.00);\\\\$#,0.00\"}},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "filters": "[]",
+          "height": 150.94,
+          "width": 321.10,
+          "x": 9.61,
+          "y": 175.64,
+          "z": 2000.00
+        },
+        {
+          "config": "{\"name\":\"e18440053f069d50316e\",\"layouts\":[{\"id\":0,\"position\":{\"x\":1036.3325042544834,\"y\":7.238643801544704,\"z\":9000,\"width\":243.70100798533838,\"height\":141.15355413012173,\"tabOrder\":9000}}],\"singleVisual\":{\"visualType\":\"cardVisual\",\"projections\":{\"Data\":[{\"queryRef\":\"FactTaxiDaily.Avg FX Rate\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"f1\",\"Entity\":\"FactTaxiDaily\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f1\"}},\"Property\":\"Avg FX Rate\"},\"Name\":\"FactTaxiDaily.Avg FX Rate\",\"NativeReferenceName\":\"Avg FX Rate (USD/EUR)\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f1\"}},\"Property\":\"Avg FX Rate\"}}}]},\"columnProperties\":{\"FactTaxiDaily.Avg FX Rate\":{\"displayName\":\"Avg FX Rate (USD/EUR)\"}},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "filters": "[]",
+          "height": 141.15,
+          "width": 243.70,
+          "x": 1036.33,
+          "y": 7.24,
+          "z": 9000.00
+        }
+      ],
+      "width": 1280.00
+    }
+  ]
+}

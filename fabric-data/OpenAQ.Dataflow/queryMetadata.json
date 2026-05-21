@@ -1,0 +1,190 @@
+{
+  "formatVersion": "202502",
+  "computeEngineSettings": {
+    "allowModernEvaluationEngine": true
+  },
+  "name": "OpenAQ",
+  "queryGroups": [],
+  "documentLocale": "en-US",
+  "queriesMetadata": {
+    "openaq_nyc_daily": {
+      "queryId": "ac9e64dd-a2ae-4a6b-9675-4fdbd357b5e2",
+      "queryName": "openaq_nyc_daily",
+      "loadEnabled": false
+    },
+    "openaq_nyc_daily_DataDestination": {
+      "queryId": "bd2919de-01f2-448a-9eba-2fde07d948f4",
+      "queryName": "openaq_nyc_daily_DataDestination",
+      "isHidden": true,
+      "loadEnabled": false
+    }
+  },
+  "connections": [
+    {
+      "path": "https://api.openaq.org/v3/locations?bbox=-74.05,40.68,-73.90,40.88&parameters_id=2&limit=100&api_key=e5f60b93ef19d8360932e3bd0005765983fe8ad766742902d57f19f9c9212dc3",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"ca5934d2-1e80-4ac3-9c2e-68283dcda49d\"}"
+    },
+    {
+      "path": "Lakehouse",
+      "kind": "Lakehouse",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"462b80e3-7445-493c-9b97-31987d350d5e\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/673/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"077dfb48-8ca8-4410-a13b-6f14516c9824\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/1097/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"8038fdda-5b36-4245-8611-5b24ddd97d00\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/1102/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"dd9cf241-9a83-40a1-997f-eebed5d4779d\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/1121/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"afd555bf-5826-4868-b3ba-3a7792b6e955\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/1143/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"5db7fcd0-802b-4fca-aca6-34ce533fce3e\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/1145/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"4451b56e-2671-43dd-9a47-3f07174fc789\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/1535/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"b7f07cdd-4976-497e-a34d-237b676e84b4\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/1534/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"27de80f8-536e-4d83-af2b-a8ed4c672332\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/1662910/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"239461a6-27da-4de6-a869-24ac9f004b3b\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/2165515/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"a0da5cbc-25d1-4e0c-82d8-729d892eb0d2\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/7763001/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"52c338eb-6f9c-490e-bfe9-1cd7e25e8b7f\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/7979399/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"e859929a-ca88-4df0-9710-0ba29837b056\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/8520925/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"070c8cc4-8841-41af-a1e6-0d22b8043f1f\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/9648812/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"e51cecf1-53a6-483c-95bb-b8fca966971e\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/10986460/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"6aa406f4-2467-4667-b8e3-4048462eb9f8\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/10986466/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"2638670f-bb62-4ed2-8ee3-fb93f8ae631b\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/10986467/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"52e66879-4f76-443c-ab38-ad91b71cd714\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/10986463/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"5914d510-ba88-4266-85c9-daabdaedfe66\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/10986461/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"1988cfc5-7e59-41d8-8148-ce3b2ae2a890\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/10986465/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"4f726da7-a38f-4f84-876a-838e89f9be77\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/10986462/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"4c6e8479-9462-4650-a7bf-b473f5220d75\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/12178176/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"74f2fcb9-08c2-4fb2-94d5-21739f4c7c69\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/13071825/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"8d696e7f-bf73-4ddf-b5ce-7dd92fa5adc2\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/13322775/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"aa97876f-33aa-4d1d-a829-a67e0741f402\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/13594427/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"fcb8af0c-c2c3-4f35-8ee7-570efa717ae2\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/14904963/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"1aac403d-b4fd-4bd7-af5b-2520b60f40d2\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/15101968/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"188b6040-946a-4fc6-bc56-dd8f3ee2a289\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/15422209/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"2735db94-d5f1-4fec-bcbe-8a34abfc1f89\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/15657376/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"a5b8e730-93e2-4582-8f9e-291437a58b4e\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/15915686/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"8d09feae-bf38-4e44-938d-d2d7a737eab4\"}"
+    },
+    {
+      "path": "https://api.openaq.org/v3/sensors/16083422/days",
+      "kind": "Web",
+      "connectionId": "{\"ClusterId\":\"9a43ce04-acb1-4fa8-b144-ed9b4ff40562\",\"DatasourceId\":\"b139c5a5-5366-41ec-a4ba-a5a3bd001882\"}"
+    }
+  ],
+  "fastCombine": true
+}

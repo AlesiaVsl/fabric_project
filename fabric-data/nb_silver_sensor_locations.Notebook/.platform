@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "nb_silver_sensor_locations"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "57abb5dd-6421-bbc8-4f43-c22d407875dc"
+  }
+}

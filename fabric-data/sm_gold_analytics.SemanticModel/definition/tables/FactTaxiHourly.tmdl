@@ -1,0 +1,129 @@
+table FactTaxiHourly
+	lineageTag: 7f34beaa-a6c9-4600-8976-5ad1659f2c0c
+	sourceLineageTag: [dbo].[FactTaxiHourly]
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: a53d60ff-3e13-490a-8199-b2cdd8900255
+		sourceLineageTag: date_key
+		summarizeBy: none
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column pickup_hour
+		dataType: int64
+		formatString: 0
+		lineageTag: 87065f08-eaf1-473d-ab87-5612671db7bb
+		sourceLineageTag: pickup_hour
+		summarizeBy: sum
+		sourceColumn: pickup_hour
+
+		annotation SummarizationSetBy = Automatic
+
+	column day_of_week
+		dataType: int64
+		formatString: 0
+		lineageTag: 23bfa02f-4457-4ccc-a576-8d1c0f2ae5a9
+		sourceLineageTag: day_of_week
+		summarizeBy: sum
+		sourceColumn: day_of_week
+
+		annotation SummarizationSetBy = Automatic
+
+	column pickup_location_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 26b2e455-6e9c-431c-bd3b-bd2f1f59df8e
+		sourceLineageTag: pickup_location_id
+		summarizeBy: none
+		sourceColumn: pickup_location_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column trip_count
+		dataType: int64
+		formatString: 0
+		lineageTag: b4d7e038-fbd6-4b1e-863b-43c1471472c7
+		sourceLineageTag: trip_count
+		summarizeBy: sum
+		sourceColumn: trip_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_revenue_usd
+		dataType: double
+		lineageTag: e2bf648d-28bc-4146-8138-212d7dfee5c5
+		sourceLineageTag: total_revenue_usd
+		summarizeBy: sum
+		sourceColumn: total_revenue_usd
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column total_passengers
+		dataType: int64
+		formatString: 0
+		lineageTag: 99f38693-5adf-4a6c-9df3-5fb38ab79e50
+		sourceLineageTag: total_passengers
+		summarizeBy: sum
+		sourceColumn: total_passengers
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_distance
+		dataType: double
+		lineageTag: 77607cfc-e98e-443a-972f-072a84082d17
+		sourceLineageTag: total_distance
+		summarizeBy: sum
+		sourceColumn: total_distance
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column avg_fare_usd
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 4e0f6893-040f-4148-87d7-bfeb0d39c9cf
+		sourceLineageTag: avg_fare_usd
+		summarizeBy: sum
+		sourceColumn: avg_fare_usd
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column avg_duration_min
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: ea693afe-26d0-4833-99be-8d7ab2843aaa
+		sourceLineageTag: avg_duration_min
+		summarizeBy: sum
+		sourceColumn: avg_duration_min
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column avg_distance
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: bc4ada44-5f77-4567-bae6-6eb2e61a7f38
+		sourceLineageTag: avg_distance
+		summarizeBy: sum
+		sourceColumn: avg_distance
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	partition FactTaxiHourly = entity
+		mode: directLake
+		source
+			entityName: FactTaxiHourly
+			schemaName: dbo
+			expressionSource: 'DirectLake - wh_gold'
+
