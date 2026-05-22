@@ -1,8 +1,13 @@
 [StagingDefinition = [Kind = "FastCopy"]]
 section Section1;
-[DataDestinations = {[Definition = [Kind = "Reference", QueryName = "openaq_nyc_daily_DataDestination", IsNewTarget = true], Settings = [Kind = "Manual", AllowCreation = true, ColumnSettings = [Mappings = {[SourceColumnName = "value", DestinationColumnName = "value"], [SourceColumnName = "parameter_name", DestinationColumnName = "parameter_name"], [SourceColumnName = "units", DestinationColumnName = "units"], [SourceColumnName = "utc", DestinationColumnName = "utc"], [SourceColumnName = "sensor_id", DestinationColumnName = "sensor_id"]}], DynamicSchema = true, UpdateMethod = [Kind = "Replace"], TypeSettings = [Kind = "Table"]]]}]
+[DataDestinations = {[Definition = [Kind = "Reference", QueryName = "openaq_nyc_daily_DataDestination", IsNewTarget = true], Settings = [Kind = "Manual", AllowCreation = true, ColumnSettings = [Mappings = {[SourceColumnName = "value", DestinationColumnName = "value"], [SourceColumnName = "parameter_name", DestinationColumnName = "parameter_name"], [SourceColumnName = "units", DestinationColumnName = "units"], [SourceColumnName = "utc", DestinationColumnName = "utc"], [SourceColumnName = "sensor_id", DestinationColumnName = "sensor_id"]}], DynamicSchema = false, UpdateMethod = [Kind = "Append"], TypeSettings = [Kind = "Table"]]]}]
 shared openaq_nyc_daily = let
-    apiKey = "e5f60b93ef19d8360932e3bd0005765983fe8ad766742902d57f19f9c9212dc3",
+   
+    apiKey = openaq_api_key,   
+    dateTo   = DateTime.Date(DateTime.LocalNow()),
+    dateFrom = Date.AddDays(dateTo, -10),
+    dateFromText = Date.ToText(dateFrom, "yyyy-MM-dd"),
+    dateToText   = Date.ToText(dateTo, "yyyy-MM-dd"),
 
     locationsResponse = Json.Document(
         Web.Contents(
@@ -26,17 +31,30 @@ shared openaq_nyc_daily = let
 
     filtered = Table.SelectRows(expSensorRec, each Text.Contains([sensor_name], "pm25") or Text.Contains([sensor_name], "no2")),
 
+   
     GetDays = (sid as number) =>
         let
-            resp = try Json.Document(
-                Web.Contents(
-                    "https://api.openaq.org/v3/sensors/" & Text.From(sid) & "/days",
-                    [
-                        Headers = [#"X-API-Key" = apiKey],
-                        Query = [date_from = "2024-01-01", date_to = "2026-04-01", limit = "1000"]
-                    ]
-                )
-            ) otherwise null,
+          
+            delayed = Function.InvokeAfter(
+                () =>
+                    try Json.Document(
+                        Web.Contents(
+                            "https://api.openaq.org/v3/sensors/" & Text.From(sid) & "/days",
+                            [
+                                Headers = [#"X-API-Key" = apiKey],
+                                Query = [
+                                    date_from = dateFromText,
+                                    date_to   = dateToText,
+                                    limit     = "100"
+                                ],
+                                
+                                ManualStatusHandling = {429, 500, 502, 503}
+                            ]
+                        )
+                    ) otherwise null,
+                #duration(0, 0, 0, 0.5)
+            ),
+            resp = delayed,
             results = if resp <> null then try resp[results] otherwise null else null,
             tbl = if results <> null and List.Count(results) > 0 then
                 let
@@ -53,10 +71,11 @@ shared openaq_nyc_daily = let
     allData = List.Transform(sensorIds, each GetDays(_)),
     nonEmpty = List.Select(allData, each Table.RowCount(_) > 0),
     combined = if List.Count(nonEmpty) > 0 then Table.Combine(nonEmpty) else Table.FromRecords({}),
-  #"Expanded date" = Table.ExpandRecordColumn(combined, "date", {"utc"}, {"utc"}),
-  #"Changed column type" = Table.TransformColumnTypes(#"Expanded date", {{"value", type number}, {"parameter_name", type text}, {"units", type text}, {"utc", type text}, {"sensor_id", type text}})
+    #"Expanded date" = Table.ExpandRecordColumn(combined, "date", {"utc"}, {"utc"}),
+    #"Changed column type" = Table.TransformColumnTypes(#"Expanded date", {{"value", type number}, {"parameter_name", type text}, {"units", type text}, {"utc", type text}, {"sensor_id", type text}})
 in
     #"Changed column type";
+shared openaq_api_key = "739ce404a4d90cbfdf84621253dbbf6248a1e750b4cf5dfdcae77507737b57b5" meta [IsParameterQuery = true, IsParameterQueryRequired = false, Type = type text];
 shared openaq_nyc_daily_DataDestination = let
   Pattern = Lakehouse.Contents([CreateNavigationProperties = false, EnableFolding = false, HierarchicalNavigation = null, EnableVorder = true, OutputMetadataRefresh = true]),
   Navigation_1 = Pattern{[workspaceId = "7b50e941-562a-45d8-84ca-2f60673e114d"]}[Data],

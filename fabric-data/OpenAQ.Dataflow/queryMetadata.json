@@ -12,8 +12,13 @@
       "queryName": "openaq_nyc_daily",
       "loadEnabled": false
     },
+    "openaq_api_key": {
+      "queryId": "483ee186-1ca7-4de1-8f7c-94cd81e92cce",
+      "queryName": "openaq_api_key",
+      "loadEnabled": false
+    },
     "openaq_nyc_daily_DataDestination": {
-      "queryId": "bd2919de-01f2-448a-9eba-2fde07d948f4",
+      "queryId": "a0770e92-cddd-4315-82df-356477b17652",
       "queryName": "openaq_nyc_daily_DataDestination",
       "isHidden": true,
       "loadEnabled": false
