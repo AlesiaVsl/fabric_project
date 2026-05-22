@@ -19,7 +19,7 @@
                 "location": {
                   "type": "HttpServerLocation",
                   "relativeUrl": {
-                    "value": "@concat('trip-data/yellow_tripdata_', pipeline().parameters.year, '-', pipeline().parameters.month, '.parquet')",
+                    "value": "@concat('trip-data/yellow_tripdata_',\n  if(empty(pipeline().parameters.year), formatDateTime(getPastTime(2,'Month'),'yyyy'), pipeline().parameters.year),\n  '-',\n  if(empty(pipeline().parameters.month), formatDateTime(getPastTime(2,'Month'),'MM'), pipeline().parameters.month),\n  '.parquet')",
                     "type": "Expression"
                   }
                 }
@@ -81,12 +81,10 @@
     ],
     "parameters": {
       "year": {
-        "type": "string",
-        "defaultValue": "2025"
+        "type": "string"
       },
       "month": {
-        "type": "string",
-        "defaultValue": "06"
+        "type": "string"
       }
     }
   }
