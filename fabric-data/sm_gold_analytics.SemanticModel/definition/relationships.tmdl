@@ -31,3 +31,11 @@ relationship 43137609-5a8f-9e73-743e-7882c9127753
 	fromColumn: FactTaxiHourly.pickup_location_id
 	toColumn: DimZone.location_id
 
+relationship ec4171b1-c8f7-e566-0b58-0ae1c63d92c7
+	fromColumn: DimZone.borough
+	toColumn: DimBorough.borough_name
+
+relationship 47d84857-ea39-dd77-85a0-6f837e279138
+	fromColumn: DimSensor.sensor_borough
+	toColumn: DimBorough.borough_name
+

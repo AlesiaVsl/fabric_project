@@ -20,4 +20,5 @@ ref table DimGDP
 ref table FactTaxiDaily
 ref table FactAirQualityDaily
 ref table FactTaxiHourly
+ref table DimBorough
 

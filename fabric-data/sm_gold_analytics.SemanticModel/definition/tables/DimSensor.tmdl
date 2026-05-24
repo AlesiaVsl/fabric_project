@@ -17,7 +17,7 @@ table DimSensor
 		formatString: 0
 		lineageTag: 25db8750-90b8-415b-bcbf-aa22b231c215
 		sourceLineageTag: location_id
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: location_id
 
 		annotation SummarizationSetBy = Automatic
@@ -44,7 +44,7 @@ table DimSensor
 		dataType: double
 		lineageTag: 9af0a9be-9a27-44c3-b9a3-4808662271a6
 		sourceLineageTag: latitude
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: latitude
 
 		annotation SummarizationSetBy = Automatic
@@ -55,12 +55,21 @@ table DimSensor
 		dataType: double
 		lineageTag: b4f3eaea-8320-41a6-880a-3617e7645bea
 		sourceLineageTag: longitude
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: longitude
 
 		annotation SummarizationSetBy = Automatic
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column sensor_borough
+		dataType: string
+		lineageTag: e1535dbb-c575-4218-bf0a-e05589aeae19
+		sourceLineageTag: sensor_borough
+		summarizeBy: none
+		sourceColumn: sensor_borough
+
+		annotation SummarizationSetBy = Automatic
 
 	partition DimSensor = entity
 		mode: directLake
